@@ -50,8 +50,8 @@ class Clients {
     };
 
     static async updateClient(id, { client_name, client_age, client_email }) {
-        const update = `UPDATE \`clients\` SET \`client_name\`= "${client_name}",\`client_age\`=${client_age},\`client_email\`="${client_email}" WHERE \`id\` = ${id} AND \`deleted_at\` IS NULL`;
-        const [updatedResults, _] = await db.execute(update);
+        const update = `UPDATE \`clients\` SET \`client_name\`= "${client_name}",\`client_age\`=${client_age},\`client_email\`="${client_email}" WHERE \`id\` = ? AND \`deleted_at\` IS NULL`;
+        const [updatedResults, _] = await db.execute(update, [id]);
         console.log(updatedResults);
         return updatedResults;
     }
