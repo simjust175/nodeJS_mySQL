@@ -51,7 +51,7 @@ class ClientSystem {
         const id = req.params.id;
         await ClientModels.softDelete(id);
         console.log(`Deleted client number: ${id}`);
-        res.status(200).json({msg: `Deleted client number: ${id}`})
+        res.status(200).json({msg: `Soft deleted client number: ${id}`})
     }
 
     //hard delete(not recommended) WARNING! IF NO "WHERE" IS DEFINED
@@ -75,7 +75,7 @@ class ClientSystem {
      //PUT
      static async putClient(req, res){
         const id = req.params.id;
-        const [put, _] = await ClientModels.updateClient(id, req.body);
+        const put = await ClientModels.updateClient(id, req.body);
         console.log(`Successfully PUT client: ${id}, info: ${put}`);
         res.status(201).json({Msg : `Successfully PUT client: ${id}`, put});
     };
