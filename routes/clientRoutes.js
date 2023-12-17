@@ -2,7 +2,6 @@ const express = require("express");
 const route = express.Router();
 
 const ClientController = require("../controllers/DbControllers");
-//const Controller = new ClientController();
 
 //POST
 route.post("/post/", ClientController.postClient.bind(ClientController));
