@@ -6,7 +6,7 @@ class ClientSystem {
         if(Object.keys(data).length === 0){
             console.error("no data posted!");
             return msg = `Cannot POST empty data.`;
-        }
+        };
 
         const keys = Object.keys(necessaryKeys);
         keys.forEach(key => {
@@ -14,7 +14,7 @@ class ClientSystem {
                 console.error(`Cannot post missing: ${key}`);
                 return msg =  `Cannot POST when missing: ${key}`;
             }
-        })
+        });
         return msg;
     };
 
@@ -28,7 +28,7 @@ class ClientSystem {
         await addClient.saveToDb();
         console.log(addClient);
         res.status(200).send({ "msg": "New client POSTed successfully.", addClient });
-      }
+      };
 
     static async getAll(req, res){
         const filter = req.query.filter || "*";
@@ -51,7 +51,7 @@ class ClientSystem {
         await ClientModels.softDelete(id);
         console.log(`Deleted client number: ${id}`);
         res.status(200).json({msg: `Soft deleted client number: ${id}`});
-    }
+    };
 
     //hard delete(not recommended) WARNING! IF NO "WHERE" IS DEFINED
     static async hardDelete(req, res){
@@ -69,7 +69,7 @@ class ClientSystem {
         const results = await ClientModels.findBySearch(filter, by, searchQuery);
         console.log(`Searched results returned`);
         res.status(201).send({"msg": "Searched results returned", results});
-    }
+    };
 
      //PUT
      static async putClient(req, res){
@@ -85,7 +85,7 @@ class ClientSystem {
         const patchedClient = await ClientModels.updateClientInfo(id, req.body);
         console.log(patchedClient);
         res.status(201).json({Msg : `Successfully PATCHED client: ${id}`, patchedClient});
-    }
-}
+    };
+};
 
 module.exports = ClientSystem;
