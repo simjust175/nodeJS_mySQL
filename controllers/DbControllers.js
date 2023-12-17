@@ -3,7 +3,6 @@ const ClientModels = require("../models/clients");
 class ClientSystem {
     static statusCheck(data, necessaryKeys){
         let msg = "";
-
         if(Object.keys(data).length === 0){
             console.error("no data posted!");
             return msg = `Cannot POST empty data.`;
@@ -51,7 +50,7 @@ class ClientSystem {
         const id = req.params.id;
         await ClientModels.softDelete(id);
         console.log(`Deleted client number: ${id}`);
-        res.status(200).json({msg: `Soft deleted client number: ${id}`})
+        res.status(200).json({msg: `Soft deleted client number: ${id}`});
     }
 
     //hard delete(not recommended) WARNING! IF NO "WHERE" IS DEFINED
@@ -59,7 +58,7 @@ class ClientSystem {
         const id = req.params.id;
         await ClientModels.Delete(id);
         console.log(`!! HARD deleted client number: ${id} !!`);
-        res.status(200).json({msg: `!! Hard deleted client number: ${id}`})
+        res.status(200).json({msg: `!! Hard deleted client number: ${id}`});
     };
 
     //Search
@@ -69,7 +68,7 @@ class ClientSystem {
         let by = req.query.by || "client_name";
         const results = await ClientModels.findBySearch(filter, by, searchQuery);
         console.log(`Searched results returned`);
-        res.status(201).send({"msg": "Searched results returned", results})
+        res.status(201).send({"msg": "Searched results returned", results});
     }
 
      //PUT

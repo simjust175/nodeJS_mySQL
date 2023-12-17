@@ -28,7 +28,7 @@ class Clients {
     static async findById(id) {
         const SELECTbyID = "SELECT * FROM `clients` WHERE id = ? AND `deleted_at` IS NULL"
         const [getClientById, _] = await db.execute(SELECTbyID, [id]);
-        return getClientById
+        return getClientById;
     };
 
     static async softDelete(id) {
@@ -57,16 +57,14 @@ class Clients {
     }
 
     static async updateClientInfo(id, body) {
-
         const patch = Object.entries(body).map(entry => {
             const [key, value] = entry;
-            const formattedValue =  typeof value === "string" ? `"${value}"` : `${value}`;
+            const formattedValue = typeof value === "string" ? `"${value}"` : `${value}`;
             return `${key} = ${formattedValue}`
         }).join(", ");
 
         const updateInfo = `UPDATE clients SET ${patch} WHERE id = ? AND deleted_at IS NULL`;
         const [updatedResults, _] = await db.execute(updateInfo, [id]);
-        console.log(typeof updatedResults);
         return updatedResults;
     }
 }
