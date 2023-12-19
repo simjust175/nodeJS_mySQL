@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const Joi = require("joi");
 
 class Clients {
     constructor({ client_age, client_name, client_email }) {
@@ -17,6 +18,17 @@ class Clients {
         );`;
         const addClient = await db.execute(INSERT);
         return addClient;
+    };
+
+
+    static async saveToDbNew(data) {
+        const INSERT = `INSERT INTO clients SET ?`;
+        try {
+            const[ addClient, _] = await db.query(INSERT, [data]);
+            return addClient; 
+        } catch (error) {
+            console.error(error);
+        };
     };
 
     static async findAll(filter, offset, limit) {
@@ -64,9 +76,34 @@ class Clients {
         }).join(", ");
 
         const updateInfo = `UPDATE clients SET ${patch} WHERE id = ? AND deleted_at IS NULL`;
+        //db.query??
         const [updatedResults, _] = await db.execute(updateInfo, [id]);
         return updatedResults;
-    }
+    };
+
+    static async isValueValid(value){
+        const validateSchema = Joi.object({
+            client_age: Joi.number().required().min(20).max(100),
+            client_name: Joi.string().required().min(6).max(30),
+            client_email: Joi.string().required().email()
+        });
+        return validateSchema.validate(value);
+    };
+
+    //   LOG - IN  //
+
+    static async validateLogin(data){
+        const loginSchema = Joi.object({
+            name: Joi.string().required().min(6).max(30),
+            email: Joi.string().required().email()
+        });
+        return loginSchema.validate(data);
+    };
+
+    static async findByName(name){
+        const SELECT = "SELECT `id`, `client_name`, `client_email` FROM `clients` WHERE `client_name` = ?";
+        return await db.query(SELECT, [name]);
+    };
 }
 
 module.exports = Clients;

@@ -6,6 +6,9 @@ const ClientController = require("../controllers/DbControllers");
 //POST
 route.post("/post/", ClientController.postClient.bind(ClientController));
 
+//POST
+route.post("/hash/", ClientController.postClientHash.bind(ClientController));
+
 //GET all
 route.get("/", ClientController.getAll.bind(ClientController));
 
@@ -26,5 +29,8 @@ route.put("/put/:id", ClientController.putClient.bind(ClientController));
 
 //PATCH
 route.patch("/patch/:id", ClientController.patchClient.bind(ClientController));
+
+//Log-in
+route.post("/login/", ClientController.login.bind(ClientController))
 
 module.exports = route;
