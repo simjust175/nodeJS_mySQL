@@ -105,12 +105,15 @@ class ClientSystem {
 
     // ~~~~~~~~~~~~~~~~~ \\ LOG -IN // ~~~~~~~~~~~~~~~~~~ \\
 
-    static async login(req, res){
-        const validation = await ClientModels.validateLogin(req.body);
-        if(!validation) return res.status(401).json({msg: "Details missing"});
-        const email = await ClientModels.findByName(req.body.name);
-        const isEmail = email[0][0]?.client_email;
-        const isValid = !isEmail ? false : await bcrypt.compare(req.body.email, email[0][0]?.client_email);
+    static async login({body}, res){
+        const {name, email} = body;
+        const validation = await ClientModels.validateLogin(body);  
+        const clientName = await ClientModels.findByName(name);
+        const isEmailValid = clientName[0][0]?.client_email;
+        if(!validation || !isEmailValid) return res.status(401).json({msg: "Details missing"});
+
+        //Encryption
+        const isValid = await bcrypt.compare(email, isEmailValid);
         if(!isValid) return res.status(401).json({msg: "Auth failed."});
         res.status(200).json({msg: "Auth successful"});
     };
